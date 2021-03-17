@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import Section from '../Layout';
 
 const tipOptions = [5,10,15,20];

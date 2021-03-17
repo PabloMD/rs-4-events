@@ -1,0 +1,9 @@
+.withErrors input, .withErrors textarea{
+    border: solid 1px #f00;
+}
+.withErrors label, .errors{
+    color: #f00;
+}
+.errors{
+    font-weight: 700;
+}

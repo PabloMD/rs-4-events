@@ -1,12 +1,15 @@
 import './App.css';
+import FormValidation from './components/FormValidation';
 
-import RestaurantCalc, { RestaurantCalcFunc } from './components/RestaurantCalc';
+// import RestaurantCalc, { RestaurantCalcFunc } from './components/RestaurantCalc';
+
 
 function App() {
   return (
     <div className="App">
-      <RestaurantCalc />
-      <RestaurantCalcFunc />
+      <FormValidation />
+      {/* <RestaurantCalc /> */}
+      {/* <RestaurantCalcFunc /> */}
     </div>
   );
 }
