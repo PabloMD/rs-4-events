@@ -6,17 +6,19 @@ import './ExpenseCalculator.scss';
 import { InputWrapper } from '../FormikValidation';
 import { Formik, Form, Field } from 'formik';
 
-import Section from "../Layout";
+import Section from '../Layout';
 import { ExpensesList } from '.';
 
-const entryTypes = [ 'Expense', 'Income'];
-const expenseCategories = [ 'Grocery', 'Sport', 'Travel', 'Whisky', 'Salary'];
-const initialIncomes = [{
-    id: uuidv4(),
-    name: "Base salary",
-    category: 'Salary',
-    amount: 9999
-} ];
+const entryTypes = ['Expense', 'Income'];
+const expenseCategories = ['Grocery', 'Sport', 'Travel', 'Whisky', 'Salary'];
+const initialIncomes = [
+    {
+        id: uuidv4(),
+        name: 'Base salary',
+        category: 'Salary',
+        amount: 9999,
+    },
+];
 
 const initialExpenses = [
     {
@@ -39,21 +41,20 @@ const initialExpenses = [
     },
 ];
 
-
 const useRemovableList = (initialValue = []) => {
-    const [list, setList ] = useState(initialValue);
+    const [list, setList] = useState(initialValue);
 
     const removeItem = (toRemove) => {
         setList(list.filter((item) => item.id !== toRemove.id));
     };
 
-    const addItem = ({name, amount, category }) => {
+    const addItem = ({ name, amount, category }) => {
         setList([
             {
                 id: uuidv4(),
                 name: name,
                 amount: parseFloat(amount, 10),
-                category: category
+                category: category,
             },
             ...list,
         ]);
@@ -63,8 +64,6 @@ const useRemovableList = (initialValue = []) => {
 };
 
 const ExpenseCalculator = () => {
-    const [balance, setBalance] = useState(0);
-
     const [expenses, addExpense, removeExpense] = useRemovableList(
         localStorage.getItem('myExpenses')
             ? JSON.parse(localStorage.getItem('myExpenses'))
@@ -76,13 +75,17 @@ const ExpenseCalculator = () => {
             : initialIncomes
     );
 
-    useEffect(() => {
-        setBalance(
-            incomes.reduceRight((sum, item) => (sum += item.amount), 0) -
-                expenses.reduceRight((sum, item) => (sum += item.amount), 0)
+    const getTotal = (incomesArray, expensesArray) => (
+        incomesArray.reduce((sum, item) => (sum += item.amount), 0) -
+        expensesArray.reduce((sum, item) => (sum += item.amount), 0)
         );
+
+    const [balance, setBalance] = useState(getTotal(incomes,expenses));
+
+    useEffect(() => {
+        setBalance(getTotal(incomes, expenses));
         localStorage.setItem('myExpenses', JSON.stringify(expenses));
-        localStorage.setItem('myIncomes', JSON.stringify( incomes));
+        localStorage.setItem('myIncomes', JSON.stringify(incomes));
     }, [expenses, incomes]);
 
     return (
@@ -199,4 +202,3 @@ const ExpenseCalculator = () => {
 };
 
 export default ExpenseCalculator;
-
