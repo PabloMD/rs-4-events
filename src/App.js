@@ -1,4 +1,5 @@
 import './App.css';
+import FormikValidation from './components/FormikValidation';
 import FormValidation from './components/FormValidation';
 
 // import RestaurantCalc, { RestaurantCalcFunc } from './components/RestaurantCalc';
@@ -7,6 +8,7 @@ import FormValidation from './components/FormValidation';
 function App() {
   return (
     <div className="App">
+      <FormikValidation />
       <FormValidation />
       {/* <RestaurantCalc /> */}
       {/* <RestaurantCalcFunc /> */}

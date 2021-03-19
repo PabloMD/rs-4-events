@@ -77,13 +77,11 @@ class FormValidation extends React.Component{
                     </InputWrapper>
                     <InputWrapper errors={this.state.errors.gender}>
                         <label>Gender: </label>
-                        {genderOptions.map((item, i) => {
-                            return(
+                        {genderOptions.map((item, i) =>(
                                 <label  key={item.id}>
                                     <input name="gender" type="radio" checked={this.state.gender === item.value} value={item.value} onChange={this.onInputChange} />{item.value}
                                 </label>
-                            );
-                        })}
+                        ))}
                     </InputWrapper>
 
                     <InputWrapper errors={this.state.errors.regulations}>

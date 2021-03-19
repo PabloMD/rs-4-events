@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import Section from '../Layout';
 
-const tipOptions = [5,10,15,20];
+const tipOptions = [5, 10, 15, 20];
 const vatRate = 0.23;
 
-function useInputHook(initialValue = ''){
+function useInputHook(initialValue = '') {
     const [state, setState] = useState(initialValue);
 
     const handleChange = (e) => {
@@ -12,9 +12,9 @@ function useInputHook(initialValue = ''){
     };
 
     return [state, handleChange];
-};
+}
 
-function RestaurantCalcFunc(){
+function RestaurantCalcFunc() {
     const [amountToPay, setAmountToPay] = useState();
     const [amount, handleAmountChange] = useInputHook(undefined);
     const [tip, handleTipChange] = useInputHook(tipOptions[0]);
@@ -24,37 +24,57 @@ function RestaurantCalcFunc(){
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setAmountToPay(
-            ((amount * ((100.0 + tip )/100) ) * (vatRate + 1)).toFixed(2)
+            (amount * ((100.0 + tip) / 100) * (vatRate + 1)).toFixed(2)
         );
     };
 
     const handleReset = (e) => {
         setAmountToPay(undefined);
     };
-        return(
-            <Section title="Restaurant Calculator Function">
-                { amountToPay ?
-                    <div>
-                        <p><strong>{amountToPay} Gross</strong></p>
-                        <button onClick={handleReset} type="reset">Reset</button>
-                    </div>
-                :
+    return (
+        <Section title="Restaurant Calculator Function">
+            {amountToPay ? (
+                <div>
+                    <p>
+                        <strong>{amountToPay} Gross</strong>
+                    </p>
+                    <button onClick={handleReset} type="reset">
+                        Reset
+                    </button>
+                    <p>
+                        Is there a easy way to reset the state of amountInput? :)
+                    </p>
+                </div>
+            ) : (
                 <form onSubmit={handleFormSubmit}>
                     <div>
-                        <input ref={amountInput} name="amount" type="number" placeholder="Net amount" onChange={handleAmountChange} step="any" />
+                        <input
+                            ref={amountInput}
+                            name="amount"
+                            type="number"
+                            placeholder="Net amount"
+                            onChange={handleAmountChange}
+                            step="any"
+                        />
                     </div>
                     <div>
-                        <select name="tip" value={tip}  onChange={handleTipChange}>
-                            { tipOptions.map((percent, i) =>
-                                <option key={i} value={percent}>{percent}%</option>
-                            )}
+                        <select
+                            name="tip"
+                            value={tip}
+                            onChange={handleTipChange}
+                        >
+                            {tipOptions.map((percent, i) => (
+                                <option key={i} value={percent}>
+                                    {percent}%
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <button type="submit">Convert</button>
                 </form>
-                }
-            </Section>
-        );
+            )}
+        </Section>
+    );
 }
 
 export default RestaurantCalcFunc;

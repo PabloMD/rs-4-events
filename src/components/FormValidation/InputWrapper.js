@@ -1,13 +1,14 @@
 
 const InputWrapper = ({children, errors}) => {
-    const errorPresent = () => errors !== undefined && errors.length;
-    const showErrors = () => (errorPresent() ? <div className="errors"><p>{errors}</p></div>: null);
-
-    return(
-        <div className={errorPresent() ? 'withErrors' : null}>
+    return (
+        <div className={ errors ? 'withErrors' : null}>
             {children}
 
-            {showErrors()}
+            { errors && (
+                <div className="errors">
+                    <p>{errors}</p>
+                </div>
+            )}
         </div>
     );
 };
