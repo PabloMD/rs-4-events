@@ -1,0 +1,42 @@
+.expCalc{
+    .balance{
+        font-weight: 700;
+        font-size: 1.5em;
+        margin: 0;
+        span{
+            color: #0f0;
+        }
+        &.bankrupt{
+            span{
+                color: #f00;
+            }
+        }
+    }
+
+    .wrapper{
+        display: flex;
+        margin: 0 -20px;
+        form, .lists{
+            padding: 0 20px;
+        }
+    }
+    .lists{
+        margin: 0 -20px;
+        display: flex;
+        width: 100%;
+        > section{
+            padding: 0 20px;
+            width: 50%;
+        }
+    }
+    .removeItem{
+        cursor: pointer;
+    }
+    .listTable{
+        border-collapse: collapse;
+        td{
+            padding: 2px 4px;
+            border-bottom: solid 1px gray;
+        }
+    }
+}

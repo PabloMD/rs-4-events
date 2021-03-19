@@ -1,8 +1,8 @@
 
-function Section({ children, title }){
-    return(
-        <section>
-            { title ? <h2>{title}</h2> : '' }
+function Section({ children, title, className }) {
+    return (
+        <section className={className}>
+            {title ? <h2>{title}</h2> : ''}
             {children}
         </section>
     );
