@@ -11,8 +11,8 @@ function App() {
     <div className="App">
       <ExpenseCalculator />
       <FormikValidation />
-      <FormValidation />
-      <RestaurantCalc />
+      {/* <FormValidation /> */}
+      {/* <RestaurantCalc /> */}
       <RestaurantCalcFunc />
     </div>
   );
