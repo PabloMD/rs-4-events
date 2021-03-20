@@ -11,29 +11,30 @@ import { ExpensesList } from '.';
 
 const entryTypes = ['Expense', 'Income'];
 const expenseCategories = ['Grocery', 'Sport', 'Travel', 'Whisky', 'Salary'];
-const initialIncomes = [
+const initialEntries = [
     {
+        entryType: 'Income',
         id: uuidv4(),
         name: 'Base salary',
         category: 'Salary',
         amount: 9999,
     },
-];
-
-const initialExpenses = [
     {
+        entryType: 'Expense',
         id: uuidv4(),
         name: 'Saturday shopping',
         category: 'Grocery',
         amount: 300,
     },
     {
+        entryType: 'Expense',
         id: uuidv4(),
         name: 'Saturday whisky',
         category: 'Whisky',
         amount: 150,
     },
     {
+        entryType: 'Expense',
         id: uuidv4(),
         name: 'Subway ticket',
         category: 'Travel',
@@ -48,13 +49,14 @@ const useRemovableList = (initialValue = []) => {
         setList(list.filter((item) => item.id !== toRemove.id));
     };
 
-    const addItem = ({ name, amount, category }) => {
+    const addItem = ({ name, amount, category, entryType }) => {
         setList([
             {
                 id: uuidv4(),
-                name: name,
+                name,
                 amount: parseFloat(amount, 10),
-                category: category,
+                category,
+                entryType
             },
             ...list,
         ]);
@@ -64,16 +66,13 @@ const useRemovableList = (initialValue = []) => {
 };
 
 const ExpenseCalculator = () => {
-    const [expenses, addExpense, removeExpense] = useRemovableList(
-        localStorage.getItem('myExpenses')
-            ? JSON.parse(localStorage.getItem('myExpenses'))
-            : initialExpenses
-    );
-    const [incomes, addIncome, removeIncome] = useRemovableList(
-        localStorage.getItem('myIncomes')
-            ? JSON.parse(localStorage.getItem('myIncomes'))
-            : initialIncomes
-    );
+    const getEntries = (entryType) =>
+        (localStorage.getItem('expenses')
+            ? JSON.parse(localStorage.getItem('expenses'))
+            : initialEntries
+        ).filter((item) => item.entryType === entryType);
+    const [expenses, addExpense, removeExpense] = useRemovableList(getEntries('Expense'));
+    const [incomes, addIncome, removeIncome] = useRemovableList(getEntries('Income'));
 
     const getTotal = (incomesArray, expensesArray) => (
         incomesArray.reduce((sum, item) => (sum += item.amount), 0) -
@@ -84,8 +83,7 @@ const ExpenseCalculator = () => {
 
     useEffect(() => {
         setBalance(getTotal(incomes, expenses));
-        localStorage.setItem('myExpenses', JSON.stringify(expenses));
-        localStorage.setItem('myIncomes', JSON.stringify(incomes));
+        localStorage.setItem('expenses', JSON.stringify([...expenses, ...incomes]));
     }, [expenses, incomes]);
 
     return (
@@ -96,7 +94,7 @@ const ExpenseCalculator = () => {
             <div className="wrapper">
                 <Formik
                     initialValues={{
-                        entry_type: 'Expense',
+                        entryType: 'Expense',
                         name: '',
                         amount: 0,
                         category: expenseCategories[0],
@@ -104,8 +102,8 @@ const ExpenseCalculator = () => {
                     validate={(values) => {
                         const errors = {};
                         console.log('validating');
-                        if (!entryTypes.includes(values.entry_type)) {
-                            errors.entry_type = 'Required';
+                        if (!entryTypes.includes(values.entryType)) {
+                            errors.entryType = 'Required';
                         }
                         if (!values.name) {
                             errors.name = 'Required';
@@ -121,7 +119,7 @@ const ExpenseCalculator = () => {
                     }}
                     onSubmit={(values, { resetForm }) => {
                         console.log('submitted');
-                        if (values.entry_type === 'Income') {
+                        if (values.entryType === 'Income') {
                             addIncome(values);
                             setBalance(balance + parseFloat(values.amount, 10));
                         } else {
@@ -134,15 +132,15 @@ const ExpenseCalculator = () => {
                 >
                     {({ errors }) => (
                         <Form>
-                            <InputWrapper {...{ name: 'entry_type', errors }}>
-                                <span id="entry_type-label-group">
+                            <InputWrapper {...{ name: 'entryType', errors }}>
+                                <span id="entryType-label-group">
                                     Entry type:
                                 </span>
-                                <div aria-labelledby="entry_type-label-group">
+                                <div aria-labelledby="entryType-label-group">
                                     {entryTypes.map((item) => (
                                         <label key={item}>
                                             <Field
-                                                name="entry_type"
+                                                name="entryType"
                                                 type="radio"
                                                 value={item}
                                             />
