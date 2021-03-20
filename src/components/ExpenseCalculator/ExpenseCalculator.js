@@ -101,7 +101,6 @@ const ExpenseCalculator = () => {
                     }}
                     validate={(values) => {
                         const errors = {};
-                        console.log('validating');
                         if (!entryTypes.includes(values.entryType)) {
                             errors.entryType = 'Required';
                         }
@@ -118,7 +117,6 @@ const ExpenseCalculator = () => {
                         return errors;
                     }}
                     onSubmit={(values, { resetForm }) => {
-                        console.log('submitted');
                         if (values.entryType === 'Income') {
                             addIncome(values);
                             setBalance(balance + parseFloat(values.amount, 10));
